@@ -38,7 +38,7 @@ public class Db {
             int cnt =0;
             int total = 0;
             int r = 0;
-
+            int ab = 0;
             while(check) {
                 root = parser.gsonData(start, end);
                 for (int i = 0; i < 999; i++) {
@@ -60,7 +60,7 @@ public class Db {
                     preSt.setString(16, root.TbPublicWifiInfo.row.get(i).WORK_DTTM);
                     cnt++;
                     r += preSt.executeUpdate();
-
+                    System.out.println(ab++);
                     total = Integer.parseInt(root.TbPublicWifiInfo.list_total_count);
                     if (cnt == total) {
                         check = false;

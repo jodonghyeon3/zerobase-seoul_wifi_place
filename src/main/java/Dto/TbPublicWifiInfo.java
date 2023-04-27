@@ -4,5 +4,5 @@ import java.util.List;
 
 public class TbPublicWifiInfo {
     public String list_total_count;
-    public List<row> row;
+    public List<Row> row;
 }
