@@ -70,6 +70,7 @@
 
         <input type="button" value="내 위치 가져오기" onclick="getLocation()">
         <input type="submit" value="근처 WIPI 정보 보기">
+
     </form>
 </div>
 

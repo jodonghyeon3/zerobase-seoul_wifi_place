@@ -1,13 +1,11 @@
 package Db;
 
 
-import Api.GetApiData;
 import Api.GsonApi;
 import Dto.Root;
 
+
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Locale;
 
 public class Db {
     public int save() {
@@ -90,28 +88,4 @@ public class Db {
         }
         return Integer.parseInt(root.TbPublicWifiInfo.list_total_count);
     }
-
-    public void select() {
-        String url = "jdbc:mariadb://localhost:3306/wifi";
-        String dbUserId = "testuser1";
-        String dbPassword = "zerobase";
-        StringBuffer sb = new StringBuffer();
-        String a = "";
-        a.toUpperCase();
-        try {
-            Class.forName("org.mariadb.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        Connection connection = null;
-        PreparedStatement preSt = null;
-        ResultSet rs = null;
-        Root root = null;
-    }
-
-//    public static void main(String[] args) {
-//        Db db = new Db();
-//        db.save();
-//    }
 }
