@@ -100,12 +100,13 @@
         <th>Y좌표</th>
         <th>작업일자</th>
     </tr>
+    <form id="wifiForm" action="/wifiDetail" method="post">
     <% for (int i = 0; i < 20; i++) { %>
     <tr>
         <td><%=rows.get(i).getDISTANCE()%></td>
         <td><%=rows.get(i).getX_SWIFI_MGR_NO()%></td>
         <td><%=rows.get(i).getX_SWIFI_WRDOFC()%></td>
-        <td><%=rows.get(i).getX_SWIFI_MAIN_NM()%></td>
+        <td data-wifi-id="<%=rows.get(i).getX_SWIFI_MAIN_NM()%>" onclick="submitForm(this.dataset.wifiId)"><%=rows.get(i).getX_SWIFI_MAIN_NM()%></td>
         <td><%=rows.get(i).getX_SWIFI_ADRES1()%></td>
         <td><%=rows.get(i).getX_SWIFI_ADRES2()%></td>
         <td><%=rows.get(i).getX_SWIFI_INSTL_FLOOR()%></td>
@@ -122,8 +123,15 @@
 
     </tr>
     <%} %>
+    </form>
 
 </table>
 
 </body>
 </html>
+<script>
+    function submitForm(value) {
+        document.getElementById('wifiForm').innerHTML += '<input type="hidden" name="wifiMainName" value="' + value + '">';
+        document.getElementById('wifiForm').submit();
+    }
+</script>
