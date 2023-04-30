@@ -52,14 +52,19 @@
         <th>비고</th>
     </tr>
     <% for (int i = hi.size() -1; i >= 0; i--) { %>
+    <form action="wifiHistoryDelete" method="post">
     <tr>
-        <td><%=i + 1%></td>
+        <td name ="id"><%=hi.get(i).getId()%></td>
         <td><%=hi.get(i).getLnt()%></td>
         <td><%=hi.get(i).getLnt()%></td>
         <td><%=hi.get(i).getDate()%></td>
-        <td><input type="submit" value="삭제"></td>
+        <td>
+            <input type="hidden" name="id" value="<%=hi.get(i).getId()%>">
+            <input type="submit" value="삭제">
+        </td>
 
     </tr>
+    </form>
     <%} %>
 </table>
 

@@ -17,6 +17,16 @@
             padding: 8px;
         }
 
+        .wifiName {
+            cursor: pointer;
+
+            text-decoration: underline;
+
+
+        }
+        .wifiName:hover {
+            color:darkblue;
+        }
         #customers tr:nth-child(even){background-color: #f2f2f2;}
 
         #customers tr:hover {background-color: #ddd;}
@@ -62,7 +72,7 @@
 
 <h1>와이파이 정보 구하기</h1>
 <a href="index.jsp">홈</a> |
-<a href="">위치 히스토리 목록</a> |
+<a href="history.jsp">위치 히스토리 목록</a> |
 <a href="load-wifi.jsp">Open API 와이파이 정보 가져오기</a>
 <br>
 <div>
@@ -106,7 +116,7 @@
         <td><%=rows.get(i).getDISTANCE()%></td>
         <td><%=rows.get(i).getX_SWIFI_MGR_NO()%></td>
         <td><%=rows.get(i).getX_SWIFI_WRDOFC()%></td>
-        <td data-wifi-id="<%=rows.get(i).getX_SWIFI_MAIN_NM()%>" onclick="submitForm(this.dataset.wifiId)"><%=rows.get(i).getX_SWIFI_MAIN_NM()%></td>
+        <td class="wifiName" data-wifi-id="<%=rows.get(i).getX_SWIFI_MAIN_NM()%>" onclick="submitForm(this.dataset.wifiId)"><%=rows.get(i).getX_SWIFI_MAIN_NM()%></td>
         <td><%=rows.get(i).getX_SWIFI_ADRES1()%></td>
         <td><%=rows.get(i).getX_SWIFI_ADRES2()%></td>
         <td><%=rows.get(i).getX_SWIFI_INSTL_FLOOR()%></td>
