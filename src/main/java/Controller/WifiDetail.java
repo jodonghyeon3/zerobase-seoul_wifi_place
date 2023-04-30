@@ -17,13 +17,12 @@ public class WifiDetail extends HttpServlet {
     public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         String s = request.getParameter("wifiMainName");
-        System.out.println(s);
         int idx = wifiDetail(s);
         FindNearWifiInfo findNear = new FindNearWifiInfo();
         List<Row> rows = findNear.find();
         Row row = rows.get(idx);
         request.setAttribute("row", row);
-        RequestDispatcher dis = request.getRequestDispatcher("/history.jsp");
+        RequestDispatcher dis = request.getRequestDispatcher("/wifiInfo.jsp");
         dis.forward(request, response);
     }
 

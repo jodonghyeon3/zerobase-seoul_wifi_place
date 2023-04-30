@@ -20,7 +20,7 @@ public class FindNearWifiInfo {
         try {
             Class.forName("org.mariadb.jdbc.Driver");
             connection = DriverManager.getConnection(url, dbUserId, dbPassword);
-            preSt = connection.prepareStatement("select DISTINCT * from wifi_info order by DISTANCE ASC limit 20");
+            preSt = connection.prepareStatement("SELECT DISTINCT *, ROUND(DISTANCE, 4) AS round_distance FROM wifi_info ORDER BY round_distance ASC LIMIT 20");
             rs = preSt.executeQuery();
 
             rowInfo = new ArrayList<>();
