@@ -1,0 +1,82 @@
+package Controller;
+
+import Dto.Root;
+import Dto.WifiInfo;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+@WebServlet("/bookMarkChange")
+public class BookMarkChangeController extends HttpServlet {
+    public void service(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        request.setCharacterEncoding("UTF-8");
+        String name = request.getParameter("name");
+        String turn = request.getParameter("turn");
+        String id = request.getParameter("id");
+        change(name, turn, id);
+        RequestDispatcher dis = request.getRequestDispatcher("/bookmark-group.jsp");
+        dis.forward(request, response);
+    }
+
+    public void change(String name, String turn, String id) {
+        String url = "jdbc:mariadb://localhost:3306/wifi";
+        String dbUserId = "testuser1";
+        String dbPassword = "zerobase";
+        Connection connection = null;
+        PreparedStatement preSt = null;
+        ResultSet rs = null;
+        Root root = null;
+
+        try {
+            Class.forName("org.mariadb.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            connection = DriverManager.getConnection(url, dbUserId, dbPassword);
+            preSt = connection.prepareStatement("SELECT id FROM bookmark");
+            rs = preSt.executeQuery();
+
+            while (rs.next()) {
+                if(rs.getString(1).equals(id)) {
+                    String distanceUpdate = "UPDATE bookmark SET name = ?, turn = ?, dateNew = ? WHERE id = ?";
+                    PreparedStatement distanceSt = connection.prepareStatement(distanceUpdate);
+                    distanceSt.setString(1, name);
+                    distanceSt.setString(2, turn);
+                    distanceSt.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
+                    distanceSt.setString(4, id);
+                    distanceSt.addBatch();
+                    distanceSt.executeBatch();
+                    break;
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null && !rs.isClosed()) {
+                    rs.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            try {
+                if (!connection.isClosed()) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
