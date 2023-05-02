@@ -1,5 +1,6 @@
 <%@ page import="Db.Db" %>
 <%@ page import="Dto.Root" %>
+<%@ page import="java.sql.SQLException" %>
 <%--
   Created by IntelliJ IDEA.
   User: user
@@ -13,6 +14,7 @@
 <%
     Db db = new Db();
     int total = db.save();
+
 %>
 <html>
 <head>

@@ -17,6 +17,7 @@ public class FindNearWifiInfo {
         ResultSet rs = null;
 
         List<Row> rowInfo = null;
+        int a = 0;
         try {
             Class.forName("org.mariadb.jdbc.Driver");
             connection = DriverManager.getConnection(url, dbUserId, dbPassword);

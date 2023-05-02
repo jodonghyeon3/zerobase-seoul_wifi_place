@@ -4,7 +4,6 @@ package Db;
 import Api.GsonApi;
 import Dto.Root;
 
-
 import java.sql.*;
 
 public class Db {
@@ -26,22 +25,21 @@ public class Db {
         ResultSet rs = null;
         Root root = null;
         GsonApi parser = new GsonApi();
+        int total = 0;
         try {
             connection = DriverManager.getConnection(url, dbUserId, dbPassword);
             String sql = " insert into wifi_info (X_SWIFI_MGR_NO, X_SWIFI_WRDOFC, X_SWIFI_MAIN_NM, X_SWIFI_ADRES1, X_SWIFI_ADRES2, X_SWIFI_INSTL_FLOOR, X_SWIFI_INSTL_TY, X_SWIFI_INSTL_MBY, X_SWIFI_SVC_SE, X_SWIFI_CMCWR, X_SWIFI_CNSTC_YEAR, X_SWIFI_INOUT_DOOR, X_SWIFI_REMARS3, LNT, LAT, WORK_DTTM) " +
                     "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?); ";
             preSt = connection.prepareStatement(sql);
+
             int start = 1;
             int end = 1000;
-            int last = 0;
             boolean check = true;
-            int cnt =0;
-            int total = 0;
             int r = 0;
-            int ab = 0;
-            while(check) {
+
+            while (check) {
                 root = parser.gsonData(start, end);
-                for (int i = 0; i < 999; i++) {
+                for (int i = 0; i < 1000; i++) {
                     preSt.setString(1, root.TbPublicWifiInfo.row.get(i).X_SWIFI_MGR_NO);
                     preSt.setString(2, root.TbPublicWifiInfo.row.get(i).X_SWIFI_WRDOFC);
                     preSt.setString(3, root.TbPublicWifiInfo.row.get(i).X_SWIFI_MAIN_NM);
@@ -58,16 +56,24 @@ public class Db {
                     preSt.setDouble(14, root.TbPublicWifiInfo.row.get(i).LNT);
                     preSt.setDouble(15, root.TbPublicWifiInfo.row.get(i).LAT);
                     preSt.setString(16, root.TbPublicWifiInfo.row.get(i).WORK_DTTM);
-                    cnt++;
+
                     r += preSt.executeUpdate();
-                    System.out.println(ab++);
-                    total = Integer.parseInt(root.TbPublicWifiInfo.list_total_count);
-                    if (cnt == total) {
-                        check = false;
-                        break;
-                    }
+                }
+                total = Integer.parseInt(root.TbPublicWifiInfo.list_total_count);
+                if (end >= total - 1000) {
+                    System.out.println("end = " + end);
+                    check = false;
+                } else {
+
+
+                    start = end + 1;
+                    System.out.println("start = " + start);
+                    end = Math.min(end + 1000, total);
+                    System.out.println("end = " + end);
+
                 }
             }
+            System.out.println("저장 후");
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -86,6 +92,6 @@ public class Db {
                 e.printStackTrace();
             }
         }
-        return Integer.parseInt(root.TbPublicWifiInfo.list_total_count);
+        return total;
     }
 }

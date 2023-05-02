@@ -2,6 +2,12 @@
 <%@ page import="Dto.Row" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%
+    List<Row> row = (List<Row>) request.getAttribute("rows");
+    String lat = request.getParameter("lat");
+    String lnt = request.getParameter("lnt");
+
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -62,13 +68,11 @@
             }
         }
 
+
     </script>
 </head>
 <body>
-<%
-    FindNearWifiInfo findNear = new FindNearWifiInfo();
-    List<Row> rows = findNear.find();
-%>
+
 
 <h1>와이파이 정보 구하기</h1>
 <a href="index.jsp">홈</a> |
@@ -111,28 +115,28 @@
         <th>작업일자</th>
     </tr>
     <form id="wifiForm" action="/wifiDetail" method="post">
-    <% for (int i = 0; i < 20; i++) { %>
-    <tr>
-        <td><%=rows.get(i).getDISTANCE()%></td>
-        <td><%=rows.get(i).getX_SWIFI_MGR_NO()%></td>
-        <td><%=rows.get(i).getX_SWIFI_WRDOFC()%></td>
-        <td class="wifiName" data-wifi-id="<%=rows.get(i).getX_SWIFI_MAIN_NM()%>" onclick="submitForm(this.dataset.wifiId)"><%=rows.get(i).getX_SWIFI_MAIN_NM()%></td>
-        <td><%=rows.get(i).getX_SWIFI_ADRES1()%></td>
-        <td><%=rows.get(i).getX_SWIFI_ADRES2()%></td>
-        <td><%=rows.get(i).getX_SWIFI_INSTL_FLOOR()%></td>
-        <td><%=rows.get(i).getX_SWIFI_INSTL_TY()%></td>
-        <td><%=rows.get(i).getX_SWIFI_INSTL_MBY()%></td>
-        <td><%=rows.get(i).getX_SWIFI_SVC_SE()%></td>
-        <td><%=rows.get(i).getX_SWIFI_CMCWR()%></td>
-        <td><%=rows.get(i).getX_SWIFI_CNSTC_YEAR()%></td>
-        <td><%=rows.get(i).getX_SWIFI_INOUT_DOOR()%></td>
-        <td><%=rows.get(i).getX_SWIFI_REMARS3()%></td>
-        <td><%=rows.get(i).getLNT()%></td>
-        <td><%=rows.get(i).getLAT()%></td>
-        <td><%=rows.get(i).getWORK_DTTM()%></td>
+        <% for (int i = 0; i < row.size(); i++) { %>
+        <tr>
+            <td><%=row.get(i).getDISTANCE()%></td>
+            <td><%=row.get(i).getX_SWIFI_MGR_NO()%></td>
+            <td><%=row.get(i).getX_SWIFI_WRDOFC()%></td>
+            <td class="wifiName" data-wifi-id="<%=row.get(i).getX_SWIFI_MAIN_NM()%>" onclick="submitForm(this.dataset.wifiId)"><%=row.get(i).getX_SWIFI_MAIN_NM()%></td>
+            <td><%=row.get(i).getX_SWIFI_ADRES1()%></td>
+            <td><%=row.get(i).getX_SWIFI_ADRES2()%></td>
+            <td><%=row.get(i).getX_SWIFI_INSTL_FLOOR()%></td>
+            <td><%=row.get(i).getX_SWIFI_INSTL_TY()%></td>
+            <td><%=row.get(i).getX_SWIFI_INSTL_MBY()%></td>
+            <td><%=row.get(i).getX_SWIFI_SVC_SE()%></td>
+            <td><%=row.get(i).getX_SWIFI_CMCWR()%></td>
+            <td><%=row.get(i).getX_SWIFI_CNSTC_YEAR()%></td>
+            <td><%=row.get(i).getX_SWIFI_INOUT_DOOR()%></td>
+            <td><%=row.get(i).getX_SWIFI_REMARS3()%></td>
+            <td><%=row.get(i).getLNT()%></td>
+            <td><%=row.get(i).getLAT()%></td>
+            <td><%=row.get(i).getWORK_DTTM()%></td>
 
-    </tr>
-    <%} %>
+        </tr>
+        <%} %>
     </form>
 
 </table>

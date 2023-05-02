@@ -1,12 +1,15 @@
 <%@ page import="Controller.WifiHistory" %>
 <%@ page import="Dto.History" %>
 <%@ page import="java.util.List" %>
-<%@ page import="Controller.BookMarkController" %>
-<%@ page import="Dto.BookMark" %>
+<%@ page import="Dto.BookMarkGroup" %>
+<%@ page import="Controller.BookMarkGroupAddController" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%
 
+<%
+  String name = request.getParameter("name");
+  String turn = request.getParameter("turn");
 %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -33,6 +36,16 @@
       background-color: #04AA6D;
       color: white;
     }
+    #add {
+      position: absolute;
+      left: 50%;
+      margin-top: 10px;
+    }
+    #add1 {
+      position: absolute;
+      left: 43%;
+      margin-top: 12px;
+    }
   </style>
 </head>
 
@@ -46,45 +59,23 @@
 <a href="">즐겨 찾기 보기</a> |
 <a href="bookmark-group.jsp">즐겨 찾기 그룹 보기</a>
 <br>
-<input type="button" value="즐겨찾기 그룹 추가" onclick="move()">
-<table id="customers">
-  <tr>
-    <th>ID</th>
-    <th>북마크 이름</th>
-    <th>와이파이명</th>
-    <th>등록일자</th>
-    <th>비고</th>
-  </tr>
-  <%int idx = 0;%>
-  <% for (int i = 0; i < bookMarkList.size(); i++) {%>
-  <tr>
-    <% idx = i;%>
-    <td><%=bookMarkList.get(i).getId()%></td>
-    <td><%=bookMarkList.get(i).getName()%></td>
-    <td><%=bookMarkList.get(i).getTurn()%></td>
-    <td><%=bookMarkList.get(i).getDate()%></td>
-    <td><%=bookMarkList.get(i).getDateNew()%></td>
-    <td>
-      <input type="hidden" name="change">
-      <input type="submit" value="수정" onclick="moveChange('<%=bookMarkList.get(i).getName()%>', '<%=bookMarkList.get(i).getTurn()%>', '<%=bookMarkList.get(i).getId()%>')">
+즐겨찾기 그룹 이름을 삭제하시겠습니까?
 
-      <input type="hidden" name="delete" >
-      <input type="submit" value="삭제" onclick="moveDelete('<%=bookMarkList.get(i).getName()%>', '<%=bookMarkList.get(i).getTurn()%>')">
-    </td>
-  </tr>
-  <% } %>
-</table>
+<form action="bookMarkGroupDelete" method="post">
+  <table id="customers">
+    <tr>
+      <th>즐겨찾기 그룹 이름</th>
+      <td><input type="text" name="name" value="<%=name%>"></td>
+    </tr>
+    <tr>
+      <th>순서</th>
+      <td><input type="text" name="turn" value="<%=turn%>"></td>
+
+    </tr>
+  </table>
+  <a href="bookmark-group.jsp" id="add1">돌아가기</a>
+  <input type="submit" id="add" value="삭제" onclick="alert('삭제 되었습니다.')">
+</form>
 
 </body>
 </html>
-<script>
-  function move() {
-    window.location.href = "bookmark-group-add.jsp";
-  }
-  function moveChange(value, value1, value2) {
-    window.location.href = "bookmark-group-change.jsp?name=" + value + "&turn=" + value1 + "&id=" + value2;
-  }
-  function moveDelete(value, value1) {
-    window.location.href = "bookmark-group-delete.jsp?name=" + value + "&turn=" + value1;
-  }
-</script>

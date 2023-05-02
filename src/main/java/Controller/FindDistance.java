@@ -1,14 +1,16 @@
 package Controller;
 
 import Dto.Root;
+import Dto.Row;
 import Dto.WifiInfo;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -17,36 +19,28 @@ import java.util.List;
 @WebServlet("/location.do")
 public class FindDistance extends HttpServlet {
 
-    public double calculateDistance(double x1, double y1, double lat, double lnt) {
-        double distance = Math.sqrt(Math.pow(Math.abs(lat - x1), 2) + Math.pow(Math.abs(lnt - y1), 2));
-        return distance;
-    }
-
-
     @Override
     public void service(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
         request.setCharacterEncoding("UTF-8");
         double lat = Double.parseDouble(request.getParameter("latname"));
         double lnt = Double.parseDouble(request.getParameter("lntname"));
-//        try {
-//            select(lat, lnt);
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
+        List<Row> rows = select(lat, lnt);
+        request.setAttribute("lat", lat);
+        request.setAttribute("lnt", lnt);
+        request.setAttribute("rows", rows);
         RequestDispatcher dis = request.getRequestDispatcher("/nearWifi.jsp");
         dis.forward(request, response);
     }
 
-    public void select(double lat, double lnt) throws SQLException {
+    public List<Row> select(double lat, double lnt){
         String url = "jdbc:mariadb://localhost:3306/wifi";
         String dbUserId = "testuser1";
         String dbPassword = "zerobase";
         Connection connection = null;
         PreparedStatement preSt = null;
         ResultSet rs = null;
-        Root root = null;
-
+        List<Row> rowInfo = null;
         try {
             Class.forName("org.mariadb.jdbc.Driver");
         } catch (ClassNotFoundException e) {
@@ -54,27 +48,34 @@ public class FindDistance extends HttpServlet {
         }
         try {
             connection = DriverManager.getConnection(url, dbUserId, dbPassword);
-            preSt = connection.prepareStatement("SELECT X_SWIFI_MGR_NO, LNT, LAT FROM WIFI_INFO");
+            preSt = connection.prepareStatement("SELECT *, ROUND(6371 * ACOS(COS(RADIANS(?)) * COS(RADIANS(LAT)) * COS(RADIANS(LNT) - RADIANS(?)) + SIN(RADIANS(?)) * SIN(RADIANS(LAT))), 4)  AS DISTANCE_KM FROM wifi_info ORDER BY DISTANCE_KM ASC LIMIT 20;");
+            preSt.setDouble(1, lnt);
+            preSt.setDouble(2, lat);
+            preSt.setDouble(3, lnt);
             rs = preSt.executeQuery();
+            rowInfo = new ArrayList<>();
 
-            List<WifiInfo> wifiInfos = new ArrayList<>();
             while (rs.next()) {
-                WifiInfo wifiInfo = new WifiInfo();
-                wifiInfo.setNo(rs.getString(1));
-                wifiInfo.setLnt(rs.getDouble(2));
-                wifiInfo.setLat(rs.getDouble(3));
-                wifiInfos.add(wifiInfo);
+                Row row = new Row();
+                row.setX_SWIFI_MGR_NO(rs.getString("X_SWIFI_MGR_NO"));
+                row.setX_SWIFI_WRDOFC(rs.getString("X_SWIFI_WRDOFC"));
+                row.setX_SWIFI_MAIN_NM(rs.getString("X_SWIFI_MAIN_NM"));
+                row.setX_SWIFI_ADRES1(rs.getString("X_SWIFI_ADRES1"));
+                row.setX_SWIFI_ADRES2(rs.getString("X_SWIFI_ADRES2"));
+                row.setX_SWIFI_INSTL_FLOOR(rs.getString("X_SWIFI_INSTL_FLOOR"));
+                row.setX_SWIFI_INSTL_TY(rs.getString("X_SWIFI_INSTL_TY"));
+                row.setX_SWIFI_INSTL_MBY(rs.getString("X_SWIFI_INSTL_MBY"));
+                row.setX_SWIFI_SVC_SE(rs.getString("X_SWIFI_SVC_SE"));
+                row.setX_SWIFI_CMCWR(rs.getString("X_SWIFI_CMCWR"));
+                row.setX_SWIFI_CNSTC_YEAR(rs.getString("X_SWIFI_CNSTC_YEAR"));
+                row.setX_SWIFI_INOUT_DOOR(rs.getString("X_SWIFI_INOUT_DOOR"));
+                row.setX_SWIFI_REMARS3(rs.getString("X_SWIFI_REMARS3"));
+                row.setLNT(rs.getDouble("lnt"));
+                row.setLAT(rs.getDouble("lat"));
+                row.setWORK_DTTM(rs.getString("WORK_DTTM"));
+                row.setDISTANCE(rs.getDouble("DISTANCE_KM"));
+                rowInfo.add(row);
             }
-
-            String distanceUpdate = "UPDATE wifi_info SET distance = ? WHERE X_SWIFI_MGR_NO = ?";
-            PreparedStatement distanceSt = connection.prepareStatement(distanceUpdate);
-            for (WifiInfo wifiInfo : wifiInfos) {
-                double distance = calculateDistance(wifiInfo.getLnt(), wifiInfo.getLat(), lat, lnt);
-                distanceSt.setDouble(1, distance);
-                distanceSt.setString(2, wifiInfo.getNo());
-                distanceSt.addBatch();
-            }
-            distanceSt.executeBatch();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -93,5 +94,6 @@ public class FindDistance extends HttpServlet {
                 e.printStackTrace();
             }
         }
+        return rowInfo;
     }
 }

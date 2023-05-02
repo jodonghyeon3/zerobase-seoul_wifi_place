@@ -58,17 +58,17 @@
 <a href="index.jsp">홈</a> |
 <a href="history.jsp">위치 히스토리 목록</a> |
 <a href="load-wifi.jsp">Open API 와이파이 정보 가져오기</a> |
-<a href="">즐겨 찾기 보기</a> |
+<a href="bookmark-list.jsp">즐겨 찾기 보기</a> |
 <a href="bookmark-group.jsp">즐겨 찾기 그룹 보기</a>
 <br>
 <div>
-    <form action="/location.do" me thod="post">
+    <form action="/location.do" method="post">
         <label for="latid">LAT:</label>
-        <input type="text" id="latid" name="latname" value="${latname}">
+        <input type="text" id="latid" name="latname" value="0.0">
 
 
         <label for="lntid">, LNT:</label>
-        <input type="text" id="lntid" name="lntname" value="${lntname}">
+        <input type="text" id="lntid" name="lntname" value="0.0">
 
         <input type="button" value="내 위치 가져오기" onclick="getLocation()">
         <input type="submit" value="근처 WIPI 정보 보기">

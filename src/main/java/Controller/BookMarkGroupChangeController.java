@@ -1,7 +1,6 @@
 package Controller;
 
 import Dto.Root;
-import Dto.WifiInfo;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,13 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @WebServlet("/bookMarkChange")
-public class BookMarkChangeController extends HttpServlet {
+public class BookMarkGroupChangeController extends HttpServlet {
     public void service(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         request.setCharacterEncoding("UTF-8");
         String name = request.getParameter("name");
@@ -43,12 +39,12 @@ public class BookMarkChangeController extends HttpServlet {
         }
         try {
             connection = DriverManager.getConnection(url, dbUserId, dbPassword);
-            preSt = connection.prepareStatement("SELECT id FROM bookmark");
+            preSt = connection.prepareStatement("SELECT id FROM bookMarkGroup");
             rs = preSt.executeQuery();
 
             while (rs.next()) {
                 if(rs.getString(1).equals(id)) {
-                    String distanceUpdate = "UPDATE bookmark SET name = ?, turn = ?, dateNew = ? WHERE id = ?";
+                    String distanceUpdate = "UPDATE bookMarkGroup SET name = ?, turn = ?, dateNew = ? WHERE id = ?";
                     PreparedStatement distanceSt = connection.prepareStatement(distanceUpdate);
                     distanceSt.setString(1, name);
                     distanceSt.setString(2, turn);

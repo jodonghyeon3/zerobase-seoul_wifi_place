@@ -1,10 +1,19 @@
 package Dto;
 
-public class BookMark {
+public class BookMarkGroup {
     String id;
     String name;
-    String wifiName;
+    String turn;
     String date;
+    String dateNew;
+
+    public String getTurn() {
+        return turn;
+    }
+
+    public void setTurn(String turn) {
+        this.turn = turn;
+    }
 
     public String getId() {
         return id;
@@ -22,19 +31,19 @@ public class BookMark {
         this.name = name;
     }
 
-    public String getWifiName() {
-        return wifiName;
-    }
-
-    public void setWifiName(String wifiName) {
-        this.wifiName = wifiName;
-    }
-
     public String getDate() {
         return date;
     }
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getDateNew() {
+        return dateNew;
+    }
+
+    public void setDateNew(String dateNew) {
+        this.dateNew = dateNew;
     }
 }

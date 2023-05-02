@@ -1,16 +1,79 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: user
-  Date: 2023/05/02
-  Time: 12:37 AM
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="Controller.WifiHistory" %>
+<%@ page import="Dto.History" %>
+<%@ page import="java.util.List" %>
+<%@ page import="Controller.BookMarkGroupAddController" %>
+<%@ page import="Dto.BookMarkGroup" %>
+<%@ page import="Controller.BookMarkAddController" %>
+<%@ page import="Dto.BookMark" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%
+    BookMarkAddController bookMarkAddController = new BookMarkAddController();
+    List<BookMark> bookMarkList = bookMarkAddController.select();
+%>
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Title</title>
+    <style>
+        #customers {
+            font-family: Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        #customers td, #customers th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        #customers tr:nth-child(even){background-color: #f2f2f2;}
+
+        #customers tr:hover {background-color: #ddd;}
+
+        #customers th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #04AA6D;
+            color: white;
+        }
+    </style>
 </head>
+
 <body>
+
+
+<h1>즐겨 찾기 그룹 관리</h1>
+<a href="index.jsp">홈</a> |
+<a href="history.jsp">위치 히스토리 목록</a> |
+<a href="load-wifi.jsp">Open API 와이파이 정보 가져오기</a> |
+<a href="bookmark-list.jsp">즐겨 찾기 보기</a> |
+<a href="bookmark-group.jsp">즐겨 찾기 그룹 보기</a>
+<br>
+<table id="customers">
+    <tr>
+        <th>ID</th>
+        <th>즐겨찾기 이름</th>
+        <th>와이파이 명</th>
+        <th>등록일자</th>
+        <th>비고</th>
+    </tr>
+    <% for (int i = 0; i < bookMarkList.size(); i++) {%>
+    <form action="bookMarkDelete" method="post">
+    <tr>
+        <td><%=bookMarkList.get(i).getId()%></td>
+        <td><%=bookMarkList.get(i).getName()%></td>
+        <td><%=bookMarkList.get(i).getWifiName()%></td>
+        <td><%=bookMarkList.get(i).getDate()%></td>
+        <td>
+            <input type="hidden" name="id" value="<%=bookMarkList.get(i).getId()%>" >
+            <input type="submit" value="삭제" onclick="alert('삭제 되었습니다.')">
+        </td>
+    </tr>
+    </form>
+    <% } %>
+
+</table>
 
 </body>
 </html>

@@ -1,12 +1,13 @@
 <%@ page import="Controller.WifiHistory" %>
 <%@ page import="Dto.History" %>
 <%@ page import="java.util.List" %>
-<%@ page import="Controller.BookMarkController" %>
-<%@ page import="Dto.BookMark" %>
+<%@ page import="Controller.BookMarkGroupAddController" %>
+<%@ page import="Dto.BookMarkGroup" %>
+<%@ page import="Controller.BookMarkGroupAddController" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%
-  BookMarkController bookMarkController = new BookMarkController();
-  List<BookMark> bookMarkList = bookMarkController.select();
+  BookMarkGroupAddController bookMarkController = new BookMarkGroupAddController();
+  List<BookMarkGroup> bookMarkGroupList = bookMarkController.select();
 %>
 <!DOCTYPE html>
 <html>
@@ -58,20 +59,20 @@
     <th>비고</th>
   </tr>
   <%int idx = 0;%>
-  <% for (int i = 0; i < bookMarkList.size(); i++) {%>
+  <% for (int i = 0; i < bookMarkGroupList.size(); i++) {%>
     <tr>
       <% idx = i;%>
-      <td><%=bookMarkList.get(i).getId()%></td>
-      <td><%=bookMarkList.get(i).getName()%></td>
-      <td><%=bookMarkList.get(i).getTurn()%></td>
-      <td><%=bookMarkList.get(i).getDate()%></td>
-      <td><%=bookMarkList.get(i).getDateNew()%></td>
+      <td><%=bookMarkGroupList.get(i).getId()%></td>
+      <td><%=bookMarkGroupList.get(i).getName()%></td>
+      <td><%=bookMarkGroupList.get(i).getTurn()%></td>
+      <td><%=bookMarkGroupList.get(i).getDate()%></td>
+      <td><%=bookMarkGroupList.get(i).getDateNew()%></td>
       <td>
           <input type="hidden" name="change">
-          <input type="submit" value="수정" onclick="moveChange('<%=bookMarkList.get(i).getName()%>', '<%=bookMarkList.get(i).getTurn()%>', '<%=bookMarkList.get(i).getId()%>')">
+          <input type="submit" value="수정" onclick="moveChange('<%=bookMarkGroupList.get(i).getName()%>', '<%=bookMarkGroupList.get(i).getTurn()%>', '<%=bookMarkGroupList.get(i).getId()%>')">
 
           <input type="hidden" name="delete" >
-          <input type="submit" value="삭제" onclick="moveDelete('<%=bookMarkList.get(i).getName()%>', '<%=bookMarkList.get(i).getTurn()%>')">
+          <input type="submit" value="삭제" onclick="moveDelete('<%=bookMarkGroupList.get(i).getName()%>', '<%=bookMarkGroupList.get(i).getTurn()%>')">
       </td>
     </tr>
   <% } %>

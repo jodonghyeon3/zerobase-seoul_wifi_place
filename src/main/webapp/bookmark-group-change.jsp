@@ -1,8 +1,8 @@
 <%@ page import="Controller.WifiHistory" %>
 <%@ page import="Dto.History" %>
 <%@ page import="java.util.List" %>
-<%@ page import="Dto.BookMark" %>
-<%@ page import="Controller.BookMarkController" %>
+<%@ page import="Dto.BookMarkGroup" %>
+<%@ page import="Controller.BookMarkGroupAddController" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <%
@@ -76,7 +76,7 @@
         </tr>
     </table>
     <a href="bookmark-group.jsp" id="add1">돌아가기</a>
-    <input type="submit" id="add" value="수정">
+    <input type="submit" id="add" value="수정" onclick="alert('수정되었습니다.')">
 </form>
 
 </body>

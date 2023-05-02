@@ -7,21 +7,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.sql.*;
 
-@WebServlet("/bookMarkDelete")
-public class BookMarkDeleteController extends HttpServlet {
+@WebServlet("/bookMarkGroupDelete")
+public class BookMarkGroupDeleteController extends HttpServlet {
     public void service(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         request.setCharacterEncoding("UTF-8");
-        String id = request.getParameter("id");
-        delete(id);
-        RequestDispatcher dis = request.getRequestDispatcher("/bookmark-list.jsp");
-        dis.forward(request, response);
-
-
+        String name = request.getParameter("name");
+        RequestDispatcher dis = request.getRequestDispatcher("bookmark-group.jsp");
+        delete(name);
+        dis.forward(request,response);
     }
-    public void delete(String id) {
+    public void delete(String name) {
         String url = "jdbc:mariadb://localhost:3306/wifi";
         String dbUserId = "testuser1";
         String dbPassword = "zerobase";
@@ -32,8 +29,8 @@ public class BookMarkDeleteController extends HttpServlet {
         try {
             Class.forName("org.mariadb.jdbc.Driver");
             connection = DriverManager.getConnection(url, dbUserId, dbPassword);
-            preSt = connection.prepareStatement("DELETE FROM bookMark WHERE id = ?");
-            preSt.setString(1, id);
+            preSt = connection.prepareStatement("DELETE FROM bookMarkGroup WHERE name = ?");
+            preSt.setString(1, name);
             preSt.executeUpdate();
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
