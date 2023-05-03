@@ -36,10 +36,12 @@ public class Db {
             int end = 1000;
             boolean check = true;
             int r = 0;
+            int cnt = 0;
 
             while (check) {
                 root = parser.gsonData(start, end);
                 for (int i = 0; i < 1000; i++) {
+
                     preSt.setString(1, root.TbPublicWifiInfo.row.get(i).X_SWIFI_MGR_NO);
                     preSt.setString(2, root.TbPublicWifiInfo.row.get(i).X_SWIFI_WRDOFC);
                     preSt.setString(3, root.TbPublicWifiInfo.row.get(i).X_SWIFI_MAIN_NM);
@@ -56,21 +58,19 @@ public class Db {
                     preSt.setDouble(14, root.TbPublicWifiInfo.row.get(i).LNT);
                     preSt.setDouble(15, root.TbPublicWifiInfo.row.get(i).LAT);
                     preSt.setString(16, root.TbPublicWifiInfo.row.get(i).WORK_DTTM);
-
+                    cnt++;
                     r += preSt.executeUpdate();
+                    total = Integer.parseInt(root.TbPublicWifiInfo.list_total_count);
+                    if(cnt == total) {
+                        check = false;
+                        break;
+                    }
                 }
-                total = Integer.parseInt(root.TbPublicWifiInfo.list_total_count);
-                if (end >= total - 1000) {
-                    System.out.println("end = " + end);
+                if (end >= total) {
                     check = false;
                 } else {
-
-
                     start = end + 1;
-                    System.out.println("start = " + start);
                     end = Math.min(end + 1000, total);
-                    System.out.println("end = " + end);
-
                 }
             }
             System.out.println("저장 후");

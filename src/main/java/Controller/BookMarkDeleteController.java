@@ -14,14 +14,13 @@ import java.sql.*;
 public class BookMarkDeleteController extends HttpServlet {
     public void service(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         request.setCharacterEncoding("UTF-8");
-        String id = request.getParameter("id");
-        delete(id);
+        String wifiName = request.getParameter("wifiName");
+        delete(wifiName);
         RequestDispatcher dis = request.getRequestDispatcher("/bookmark-list.jsp");
         dis.forward(request, response);
 
-
     }
-    public void delete(String id) {
+    public void delete(String wifiName) {
         String url = "jdbc:mariadb://localhost:3306/wifi";
         String dbUserId = "testuser1";
         String dbPassword = "zerobase";
@@ -32,8 +31,8 @@ public class BookMarkDeleteController extends HttpServlet {
         try {
             Class.forName("org.mariadb.jdbc.Driver");
             connection = DriverManager.getConnection(url, dbUserId, dbPassword);
-            preSt = connection.prepareStatement("DELETE FROM bookMark WHERE id = ?");
-            preSt.setString(1, id);
+            preSt = connection.prepareStatement("DELETE FROM bookMark WHERE wifiName = ?");
+            preSt.setString(1, wifiName);
             preSt.executeUpdate();
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();

@@ -45,7 +45,7 @@
 <a href="index.jsp">홈</a> |
 <a href="history.jsp">위치 히스토리 목록</a> |
 <a href="load-wifi.jsp">Open API 와이파이 정보 가져오기</a> |
-<a href="">즐겨 찾기 보기</a> |
+<a href="bookmark-list.jsp">즐겨 찾기 보기</a> |
 <a href="bookmark-group.jsp">즐겨 찾기 그룹 보기</a>
 <br>
   <input type="button" value="즐겨찾기 그룹 추가" onclick="move()">

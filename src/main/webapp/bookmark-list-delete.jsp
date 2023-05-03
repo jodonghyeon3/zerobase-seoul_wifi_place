@@ -7,7 +7,8 @@
 
 <%
   String name = request.getParameter("name");
-  String turn = request.getParameter("turn");
+  String wifiName = request.getParameter("wifiName");
+  String date = request.getParameter("date");
 %>
 
 <!DOCTYPE html>
@@ -52,28 +53,32 @@
 <body>
 
 
-<h1>즐겨 찾기 그룹 관리</h1>
+<h1>즐겨 찾기 관리</h1>
 <a href="index.jsp">홈</a> |
 <a href="history.jsp">위치 히스토리 목록</a> |
 <a href="load-wifi.jsp">Open API 와이파이 정보 가져오기</a> |
 <a href="bookmark-list.jsp">즐겨 찾기 보기</a> |
 <a href="bookmark-group.jsp">즐겨 찾기 그룹 보기</a>
 <br>
-즐겨찾기 그룹 이름을 삭제하시겠습니까?
+즐겨찾기를 삭제하시겠습니까?
 
-<form action="bookMarkGroupDelete" method="post">
+<form action="bookMarkDelete" method="post">
   <table id="customers">
     <tr>
-      <th>즐겨찾기 그룹 이름</th>
-      <td><input type="text" name="name" value="<%=name%>"></td>
+      <th>즐겨찾기 이름</th>
+      <td><%=name%></td>
     </tr>
     <tr>
-      <th>순서</th>
-      <td><input type="text" name="turn" value="<%=turn%>"></td>
-
+      <th>와이파이명</th>
+      <td><%=wifiName%></td>
+      <input type="hidden" name="wifiName" value="<%=wifiName%>">
+    </tr>
+    <tr>
+      <th>등록일자</th>
+      <td><%=date%></td>
     </tr>
   </table>
-  <a href="bookmark-group.jsp" id="add1">돌아가기</a>
+  <a href="bookmark-list.jsp" id="add1">돌아가기</a>
   <input type="submit" id="add" value="삭제" onclick="alert('삭제 되었습니다.')">
 </form>
 

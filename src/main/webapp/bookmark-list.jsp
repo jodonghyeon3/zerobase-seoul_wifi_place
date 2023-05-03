@@ -59,7 +59,6 @@
         <th>비고</th>
     </tr>
     <% for (int i = 0; i < bookMarkList.size(); i++) {%>
-    <form action="bookMarkDelete" method="post">
     <tr>
         <td><%=bookMarkList.get(i).getId()%></td>
         <td><%=bookMarkList.get(i).getName()%></td>
@@ -67,13 +66,17 @@
         <td><%=bookMarkList.get(i).getDate()%></td>
         <td>
             <input type="hidden" name="id" value="<%=bookMarkList.get(i).getId()%>" >
-            <input type="submit" value="삭제" onclick="alert('삭제 되었습니다.')">
+            <input type="submit" value="삭제" onclick="moveDelete('<%=bookMarkList.get(i).getName()%>', '<%=bookMarkList.get(i).getWifiName()%>', '<%=bookMarkList.get(i).getDate()%>')">
         </td>
     </tr>
-    </form>
     <% } %>
 
 </table>
 
 </body>
 </html>
+<script>
+    function moveDelete(value, value1, value3) {
+        window.location.href = "bookmark-list-delete.jsp?name=" + value + "&wifiName=" + value1 + "&date=" + value3;
+    }
+</script>
